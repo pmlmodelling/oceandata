@@ -4,25 +4,25 @@
 
 def get_woa(var = None, years = None, months = range(1, 13)):
 
-   """
-   Search for World Ocean Atlas 2018 data
+    """
+    Search for World Ocean Atlas 2018 data
 
-   Parameters
-   -------------
-   var: str
-       variable to search for. Must be one of "temperature", "salinity", "silicate", "phosphate" or "nitrate"
-   years: int or list
-       years to select. WOA data is decadal, so the decade with the year will be identified. Only relevant for temperature and salinity. The others are available as climatologies.
-   months: int or list
-       months to select.
+    Parameters
+    -------------
+    var: str
+        variable to search for. Must be one of "temperature", "salinity", "silicate", "phosphate" or "nitrate"
+    years: int or list
+        years to select. WOA data is decadal, so the decade with the year will be identified. Only relevant for temperature and salinity. The others are available as climatologies.
+    months: int or list
+        months to select.
 
 
-   Returns:
-   list : a list of available thredds files.
+    Returns:
+    list : a list of available thredds files.
 
-   -------------
+    -------------
 
-   """
+    """
 
 
     if var not in ["temperature", "salinity", "silicate", "phosphate", "nitrate"]:
