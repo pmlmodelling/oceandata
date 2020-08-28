@@ -1,0 +1,9 @@
+build/
+dist/
+*egg*
+#*.ipynb
+*.nc
+*.swp
+*/*.pyc
+*/__pycache__/
+docs/source/*ipynb_checkpoints/
