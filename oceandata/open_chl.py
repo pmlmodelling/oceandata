@@ -6,7 +6,26 @@ import requests
 
 
 
-def open_occci(var = None, years = None, months = range(1, 13)):
+def get_occci(var = None, years = None, months = range(1, 13)):
+    """
+    Search for OCCCI daily data
+
+    Parameters
+    -------------
+    var: str
+        variable to search for. Must be one of "chlor_a" etc.
+    years: int or list
+        years to select.
+    months: int or list
+        months to select.
+
+
+    Returns:
+    list : a list of available thredds files.
+
+    -------------
+
+    """
 
     if type(years) is int:
        years = [years]
