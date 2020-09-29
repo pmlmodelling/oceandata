@@ -40,7 +40,7 @@ setup(name='oceandata',
         'setuptools-git',
         'wheel',
     ],
-      install_requires = "pandas",
+      install_requires = ["pandas", "bs4"],
       zip_safe=False)
 
 
