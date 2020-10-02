@@ -6,14 +6,14 @@ import requests
 
 
 
-def get_occci(var = None, years = None, months = range(1, 13)):
+def get_occci(res = "daily", years = None, months = range(1, 13)):
     """
     Search for OCCCI daily data
 
     Parameters
     -------------
-    var: str
-        variable to search for. Must be one of "chlor_a" etc.
+    res : str
+        temporal resolution. Must be one of "daily", "monthly" or "8day"
     years: int or list
         years to select.
     months: int or list
@@ -27,14 +27,23 @@ def get_occci(var = None, years = None, months = range(1, 13)):
 
     """
 
+    if res not in ["daily", "monthly", "8day"]:
+        raise ValueError("Please supply a valid temporal resolution!")
+
     if type(years) is int:
        years = [years]
 
     if type(months) is int:
        months = [months]
 
+    if type(months) is range:
+        months = list(months)
+
     if type(years) is not list:
         return TypeError("years is not a list")
+
+    if type(years) is range:
+        months = list(years)
 
     if type(months) is not list:
         return TypeError("months is not a list")
@@ -43,7 +52,8 @@ def get_occci(var = None, years = None, months = range(1, 13)):
     ext = "nc"
     ensemble = []
     for yy in years:
-        url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v5.0-release/geographic/{yy}/catalog.html'
+        url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{res}/chlor_a/{yy}/catalog.html'
+        #url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{yy}/catalog.html'
         page = requests.get(url).text
         soup = BeautifulSoup(page, 'html.parser')
         ensemble+=[url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(ext)]
@@ -55,13 +65,18 @@ def get_occci(var = None, years = None, months = range(1, 13)):
 
     for cc in chunk:
         year = int(cc[0:4])
-        url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v5.0-release/geographic/{year}/ESACCI-OC-L3S-OC_PRODUCTS-MERGED-1D_DAILY_4km_GEO_PML_OCx_QAA-{cc}-fv5.0.nc"
+        if res is "daily":
+            part1 = "1D"
+        if res is "monthly":
+            part1 = "1M"
+        if res is "8day":
+            part1 = "8D"
+        if res is "8day":
+            part2 = "DAILY"
+        else:
+            part2 = res.upper()
+        url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v4.2-release/geographic/{res}/chlor_a/{year}/ESACCI-OC-L3S-CHLOR_A-MERGED-{part1}_{part2}_4km_GEO_PML_OCx-{cc}-fv4.2.nc"
         files.append(url)
-
-
-
-    if var not in ["chlor_a"]:
-        raise ValueError("Please supply a valid variable!")
 
     return(files)
 
