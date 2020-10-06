@@ -23,7 +23,7 @@ def get_sst(source = "cobe2"):
 
 
    if source == "cobe1":
-       return "https://psl.noaa.gov/data/gridded/data.cobe.html"
+       return "https://psl.noaa.gov/thredds/dodsC/Datasets/COBE/sst.mon.mean.nc"
 
    if source == "cobe2":
        return "https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"
