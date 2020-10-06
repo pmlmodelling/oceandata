@@ -39,11 +39,12 @@ def get_occci(res = "daily", years = None, months = range(1, 13)):
     if type(months) is range:
         months = list(months)
 
-    if type(years) is not list:
-        return TypeError("years is not a list")
 
     if type(years) is range:
         months = list(years)
+
+    if type(years) is not list:
+        return TypeError("years is not a list")
 
     if type(months) is not list:
         return TypeError("months is not a list")
