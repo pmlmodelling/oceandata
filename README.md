@@ -1,2 +1,5 @@
 # oceandata
-methods to access oceanographic data
+Methods to access oceanographic data available through the likes of thredds servers.
+
+
+
