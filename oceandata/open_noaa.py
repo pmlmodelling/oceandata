@@ -40,7 +40,7 @@ def get_woa(var = None, years = None, months = range(1, 13)):
         print(f"{var} is only available as a climatological average")
 
         for mm in months:
-            month = str(mm).ljust(2, '0')
+            month = str(mm).zfill(2)
             if var == "nitrate":
                 url = f"https://data.nodc.noaa.gov/thredds/dodsC/ncei/woa/nitrate/all/1.00/woa18_all_n{month}_01.nc"
             if var == "silicate":
@@ -94,7 +94,7 @@ def get_woa(var = None, years = None, months = range(1, 13)):
 
     for mm in months:
         for pp in periods:
-            month = str(mm).ljust(2, '0')
+            month = str(mm).zfill(2)
 
             if var == "temperature":
                 url = f"https://data.nodc.noaa.gov/thredds/dodsC/ncei/woa/{var}/{pp}/1.00/woa18_{pp}_t{month}_01.nc"
