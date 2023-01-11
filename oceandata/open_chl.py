@@ -6,7 +6,7 @@ import requests
 
 
 
-def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
+def get_occci(var = None, res = "daily", years = None, months = range(1, 13), version = "6.0"):
     """
     Search for OCCCI daily data
 
@@ -20,7 +20,8 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
         years to select.
     months: int or list
         months to select.
-
+    version : str
+        OCCCI version. Select one of "4.2", "5.0" and "6.0" 
 
     Returns:
     list : a list of available thredds files.
@@ -28,6 +29,12 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
     -------------
 
     """
+
+    if not isinstance(version, str):
+        raise TypeError("version must be a str")
+
+    if version not in ["4.2", "5.0", "6.0"]:
+            raise ValueError(f"version is not valid: {version}")
 
     if var is None:
         raise ValueError("Please supply a variable!")
@@ -65,10 +72,10 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
 
     ext = "nc"
 
-    if var is "chl":
+    if var == "chl":
         ensemble = []
         for yy in years:
-            url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{res}/chlor_a/{yy}/catalog.html'
+            url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v{version}-release/geographic/{res}/chlor_a/{yy}/catalog.html'
             page = requests.get(url).text
             soup = BeautifulSoup(page, 'html.parser')
             ensemble+=[url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(ext)]
@@ -80,22 +87,22 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
 
         for cc in chunk:
             year = int(cc[0:4])
-            if res is "daily":
+            if res == "daily":
                 part1 = "1D"
-            if res is "monthly":
+            if res == "monthly":
                 part1 = "1M"
-            if res is "8day":
+            if res == "8day":
                 part1 = "8D"
-            if res is "8day":
+            if res == "8day":
                 part2 = "DAILY"
             else:
                 part2 = res.upper()
-            url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v4.2-release/geographic/{res}/chlor_a/{year}/ESACCI-OC-L3S-CHLOR_A-MERGED-{part1}_{part2}_4km_GEO_PML_OCx-{cc}-fv4.2.nc"
+            url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v{version}-release/geographic/{res}/chlor_a/{year}/ESACCI-OC-L3S-CHLOR_A-MERGED-{part1}_{part2}_4km_GEO_PML_OCx-{cc}-fv{version}.nc"
             files.append(url)
 
         return(files)
 
-    if var is "kd":
+    if var == "kd":
         ensemble = []
         for yy in years:
             url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{res}/kd/{yy}/catalog.html'
@@ -110,13 +117,13 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13)):
 
         for cc in chunk:
             year = int(cc[0:4])
-            if res is "daily":
+            if res == "daily":
                 part1 = "1D"
-            if res is "monthly":
+            if res == "monthly":
                 part1 = "1M"
-            if res is "8day":
+            if res == "8day":
                 part1 = "8D"
-            if res is "8day":
+            if res == "8day":
                 part2 = "DAILY"
             else:
                 part2 = res.upper()
