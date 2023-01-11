@@ -13,7 +13,7 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13), ve
     Parameters
     -------------
     var : str
-        The variable to search for. This must be one of "chl" and "kd" .
+        The variable to search for. This must be one of "chl", "kd", "iop" and "rrs".
     res : str
         temporal resolution. Must be one of "daily", "monthly" or "8day"
     years: int or list
@@ -42,7 +42,7 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13), ve
     if type(var) is not str:
         raise ValueError("Please supply a string for var!")
 
-    if var not in ["chl", "kd", "rrs"]:
+    if var not in ["chl", "kd", "rrs", "iop"]:
         raise ValueError(f"{var} is not a valid var")
 
     if res not in ["daily", "monthly", "8day"]:
@@ -160,10 +160,10 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13), ve
 
         return(files)
 
-    if var == "kd":
+    if var == "iop":
         ensemble = []
         for yy in years:
-            url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{res}/kd/{yy}/catalog.html'
+            url = f'https://rsg.pml.ac.uk/thredds/catalog/cci/v4.2-release/geographic/{res}/iop/{yy}/catalog.html'
             page = requests.get(url).text
             soup = BeautifulSoup(page, 'html.parser')
             ensemble+=[url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(ext)]
@@ -181,19 +181,12 @@ def get_occci(var = None, res = "daily", years = None, months = range(1, 13), ve
                 part1 = "1M"
             if res == "8day":
                 part1 = "8D"
-            if res == "8day":
-                part2 = "DAILY"
             else:
                 part2 = res.upper()
             #url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v4.2-release/geographic/{res}/kd/{year}/ESACCI-OC-L3S-CHLOR_A-MERGED-{part1}_{part2}_4km_GEO_PML_OCx-{cc}-fv4.2.nc"
-            url = f"https://rsg.pml.ac.uk/thredds/dodsC/cci/v{version}-release/geographic/daily/kd/{year}/ESACCI-OC-L3S-K_490-MERGED-{part1}_{part2}_4km_GEO_PML_KD490_Lee-{cc}-fv{version}.nc"
+            url = f"https://www.oceancolour.org/thredds/dodsC/cci/v{version}-release/geographic/{res}/iop/{year}/ESACCI-OC-L3S-IOP-MERGED-{part1}_{part2}_4km_GEO_PML_OCx_QAA-{cc}-fv{version}.nc"
+
             files.append(url)
 
         return(files)
-
-    raise ValueError("Please provide a valid variable")
-
-
-
-
 
